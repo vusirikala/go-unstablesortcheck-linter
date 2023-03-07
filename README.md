@@ -1,4 +1,4 @@
-### Go Linter to che
+### Go Linter
 This `go` linter checks the occurences of `sort.Sort` and `sort.Slice` in `go` code and suggests to replace them with more stable versions `sort.Stable` and `sort.SliceStable`.
 
 ### Example
