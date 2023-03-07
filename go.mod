@@ -1,4 +1,4 @@
-module example.com/m/v2
+module github.com/vusirikala/go-unstablesortcheck-linter
 
 go 1.20
 
