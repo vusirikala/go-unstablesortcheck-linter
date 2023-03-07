@@ -1,4 +1,4 @@
-package main
+package analyzer
 
 import (
 	"errors"
@@ -10,6 +10,7 @@ var Analyzer = &analysis.Analyzer{
 	Name: "unstablesortcheck",
 	Doc:  "reports uses of sort.Sort and sort.Slice",
 	Run:  run,
+	Requires: []*analysis.Analyzer{inspect.Analyzer},
 }
 
 var ErrNoError = errors.New("no error")
