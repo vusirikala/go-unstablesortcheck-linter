@@ -1,9 +1,9 @@
 package analyzer
 
 import (
-	"errors"
 	"go/ast"
 	"golang.org/x/tools/go/analysis"
+	"golang.org/x/tools/go/analysis/passes/inspect"
 )
 
 var Analyzer = &analysis.Analyzer{
@@ -12,8 +12,6 @@ var Analyzer = &analysis.Analyzer{
 	Run:  run,
 	Requires: []*analysis.Analyzer{inspect.Analyzer},
 }
-
-var ErrNoError = errors.New("no error")
 
 func run(pass *analysis.Pass) (interface{}, error) {
 	for _, f := range pass.Files {
@@ -30,11 +28,14 @@ func run(pass *analysis.Pass) (interface{}, error) {
 			if !ok {
 				return true
 			}
-			if pkg.Name == "sort" && (fn.Sel.Name == "Sort" || fn.Sel.Name == "Slice") {
-				pass.Reportf(call.Pos(), "use of %s.%s", pkg.Name, fn.Sel.Name)
+			if pkg.Name == "sort" && fn.Sel.Name == "Sort" {
+				pass.Reportf(call.Pos(), "Use of sort.Sort. Replace it with sort.Stable")
+			}
+			if pkg.Name == "sort" && fn.Sel.Name == "Slice" {
+				pass.Reportf(call.Pos(), "Use of sort.Slice. Replace it with sort.SliceStable")
 			}
 			return true
 		})
 	}
-	return nil, ErrNoError
+	return nil, nil
 }
